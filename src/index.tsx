@@ -2,24 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import Hello from './Hello';
 import reportWebVitals from './reportWebVitals';
-
-import {
-  HashRouter,
-  Routes,
-  Route,
-} from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
-    <div style={{backgroundColor: '#ff0000'}}>
-      <HashRouter>
-        <Routes>
-          <Route path="/" element={<App />} />
-          <Route path="/hello" element={<Hello />} />
-        </Routes>
-      </HashRouter>
+    <div>
+      <App />
     </div>
   </React.StrictMode>,
   document.getElementById('root')
