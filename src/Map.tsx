@@ -67,6 +67,17 @@ const Component = () => {
 
     map.on('load', () => {
 
+      // データの小さい順に並び替え
+      dataSet.sort((a, b) => {
+        if (a.data > b.data) {
+          return 1
+        }
+        if (a.data < b.data) {
+          return -1
+        }
+        return 0
+      })
+
       dataSet.forEach((item) => {
         map.addLayer({
           "id": item.id,
@@ -122,9 +133,7 @@ const Component = () => {
 
   return (
     <>
-      <div style={style} ref={mapContainer}>
-        Hello world!
-      </div>
+      <div style={style} ref={mapContainer} />
     </>
   );
 }

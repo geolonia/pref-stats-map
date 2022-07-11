@@ -36,14 +36,6 @@ const dataSet = [
     data: 963579,
     color: '#E0F3F8',
   },
-].sort((a, b) => {
-  if (a.data > b.data) {
-    return 1
-  }
-  if (a.data < b.data) {
-    return -1
-  }
-  return 0
-})
+]
 
 export { unit, dataSet }
