@@ -1,4 +1,5 @@
 import React from 'react';
+import { dataSet, unit } from './data';
 declare global {
   interface Window {
     geolonia: any;
@@ -11,7 +12,45 @@ const style = {
   height: '100vh',
 } as React.CSSProperties;
 
-const geojson = 'https://gist.githubusercontent.com/miya0001/22a435f6e3a11ce577655e604566edb9/raw/c7114195ed62f08f32f00bd900c7d233522396a9/sample.geojson'
+const mapStyle = {
+  "version": 8,
+  "sources": {
+    "japan": {
+      "type": "vector",
+      "url": "https://cdn.geolonia.com/tiles/japanese-prefectures.json"
+    }
+  },
+  "glyphs": "https://glyphs.geolonia.com/{fontstack}/{range}.pbf",
+  "layers": [
+    {
+      "id": "background",
+      "type": "background",
+      "paint": {
+        "background-color": "#222222"
+      }
+    },
+    {
+      "id": "prefs",
+      "type": "fill",
+      "source": "japan",
+      "source-layer": "prefectures",
+      "paint": {
+        "fill-color": "#333333",
+        "fill-outline-color": "#444444"
+      }
+    },
+    {
+      id: 'point-pref',
+      type: 'circle',
+      source: "japan",
+      "source-layer": "admins",
+      paint: {
+        'circle-radius': 4,
+        'circle-color': 'rgba(255, 255, 255, 0.6)',
+      },
+    }
+  ],
+}
 
 const Component = () => {
   const mapContainer = React.useRef(null);
@@ -19,21 +58,66 @@ const Component = () => {
   React.useEffect(() => {
     const map = new window.geolonia.Map({
       container: mapContainer.current,
-      zoom: 10,
+      zoom: 7,
       hash: true,
-      style: "geolonia/basic",
+      center: [135.53, 34.454],
+      pitch: 30,
+      style: mapStyle,
     })
 
     map.on('load', () => {
 
-      const ss = new window.geolonia.simpleStyle(geojson, {
-        id: 'fire',
+      dataSet.forEach((item) => {
+        map.addLayer({
+          "id": item.id,
+          "type": "fill-extrusion",
+          "source": "japan",
+          "source-layer": "prefectures",
+          "filter": [
+            "==",
+            "name",
+            item.name
+          ],
+          "paint": {
+            "fill-extrusion-color": item.color,
+            "fill-extrusion-height": item.data / 500,
+            "fill-extrusion-opacity": 0.9
+          }
+        }, 'point-pref')
       })
-  
-      ss.addTo(map).fitBounds()
 
+      dataSet.forEach((item) => {
+        map.addLayer({
+          "id": `symbol-${item.id}`,
+          "type": "symbol",
+          source: "japan",
+          "source-layer": "admins",
+          minzoom: 6,
+          "filter": [
+            "==",
+            "name",
+            item.name
+          ],
+          "layout": {
+            "text-font": [
+              "Noto Sans Regular"
+            ],
+            "text-field": `{name:en}\n${item.data.toLocaleString()}${unit}`,
+            "text-size": 16,
+            'text-variable-anchor': ["top", "bottom", "left", "right", "top-left", "top-right", "bottom-left", "bottom-right"],
+            'text-radial-offset': 0.5,
+            'text-line-height': 1.5,
+            'text-justify': 'auto',
+          },
+          "paint": {
+            "text-color": "#FFFFFF",
+            "text-halo-width": 1,
+            "text-halo-color": "#555555"
+          }
+        }, 'point-pref')
+      })
     })
-    
+
   });
 
   return (
