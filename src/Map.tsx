@@ -13,6 +13,7 @@ type dataType = {
 }
 
 const googleCsvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSnTrkzYm-Z3dD7erHNV_N7-EbAXJh1MdnBeajgWx2R4mHbxqwp8vzIwk6UFRm50Z_GaIovARIGwodU/pub?output=csv'
+const unit = '円';
 
 const style = {
   position: 'absolute',
@@ -93,7 +94,7 @@ const getColor = (data: number, { min, quarter, half, threeQuarter, max }: any) 
   if (data < threeQuarter) {
     return colorPalette[2];
   }
-  
+
   return colorPalette[3];
 }
 
@@ -150,6 +151,8 @@ const Component = () => {
       hash: true,
       center: [135.53, 34.454],
       style: mapStyle,
+      minZoom: 4,
+      maxZoom: 8,
     })
 
     map.on('load', () => {
@@ -160,10 +163,7 @@ const Component = () => {
         const minData = dataSet[0].data;
 
         const { min, quarter, half, threeQuarter, max } = getPercentage(maxData, minData)
-        console.log(min, quarter, half, threeQuarter, max)
         const fillColor = getColor(item.data, { min, quarter, half, threeQuarter, max });
-
-        console.log(fillColor)
 
         map.addLayer({
           "id": `fill-${item.name}`,
@@ -203,7 +203,7 @@ const Component = () => {
           "type": "symbol",
           source: "japan",
           "source-layer": "admins",
-          minzoom: 6,
+          minzoom: 7,
           "filter": [
             "==",
             "name",
@@ -213,7 +213,7 @@ const Component = () => {
             "text-font": [
               "Noto Sans Regular"
             ],
-            "text-field": `{name:en}\n${item.data.toLocaleString()}`,
+            "text-field": `{name:ja}\n${item.data.toLocaleString()}${unit}`,
             "text-size": 16,
             'text-variable-anchor': ["top", "bottom", "left", "right", "top-left", "top-right", "bottom-left", "bottom-right"],
             'text-radial-offset': 0.5,
