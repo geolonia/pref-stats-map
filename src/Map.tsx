@@ -1,11 +1,6 @@
 import React from 'react';
 import { PrefData, ConfigData } from './App';
 
-type dataType = {
-  name: string,
-  data: number,
-}
-
 declare global {
   interface Window {
     geolonia: any;
