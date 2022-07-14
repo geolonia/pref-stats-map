@@ -14,6 +14,12 @@ type dataType = {
 
 const googleCsvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSnTrkzYm-Z3dD7erHNV_N7-EbAXJh1MdnBeajgWx2R4mHbxqwp8vzIwk6UFRm50Z_GaIovARIGwodU/pub?output=csv'
 const unit = '円';
+const colorPalette = [
+  '#ffe7ad',
+  '#F9B208',
+  '#F98404',
+  '#FC5404',
+]
 
 const style = {
   width: 'calc(100% - 20px)',
@@ -26,6 +32,10 @@ const mapStyle = {
     "japan": {
       "type": "vector",
       "url": "https://cdn.geolonia.com/tiles/japanese-prefectures.json"
+    },
+    "pref-capital": {
+      "type": "geojson",
+      "data": "https://cdn.geolonia.com/japanese-prefs/v1.geojson"
     }
   },
   "glyphs": "https://glyphs.geolonia.com/{fontstack}/{range}.pbf",
@@ -72,8 +82,7 @@ const mapStyle = {
     {
       id: 'point-pref',
       type: 'circle',
-      source: "japan",
-      "source-layer": "admins",
+      source: "pref-capital",
       paint: {
         'circle-radius': 4,
         'circle-color': 'rgba(255, 255, 255, 0.6)',
@@ -81,13 +90,6 @@ const mapStyle = {
     }
   ],
 }
-
-const colorPalette = [
-  '#ffe7ad',
-  '#F9B208',
-  '#F98404',
-  '#FC5404',
-]
 
 // get max and min and 75% and 50%, and 25%
 const getPercentage = (max: number, min: number) => {
@@ -172,7 +174,7 @@ const Component = () => {
       hash: true,
       center: [138.22, 38.91],
       style: mapStyle,
-      minZoom: 4,
+      minZoom: 5,
       maxZoom: 8,
     })
 
@@ -218,13 +220,61 @@ const Component = () => {
 
       })
 
-      dataSet.forEach((item) => {
+      dataSet.forEach((item, index) => {
+
+        let minzoom;
+
+        if (index < dataSet.length - 6) {
+          minzoom = 7;
+        } else {
+          minzoom = 4;
+        }
+
+        map.addLayer({
+          "id": `circle-${item.name}`,
+          "type": "circle",
+          source: "pref-capital",
+          minzoom,
+          "filter": [
+            "==",
+            "name",
+            item.name
+          ],
+          "paint": {
+            'circle-stroke-width': 1.5,
+            'circle-stroke-color': 'rgba(255, 255, 255, 1)',
+            'circle-radius': 20,
+            'circle-color': 'rgba(255, 0, 0, 1)',
+          },
+        })
+
+        map.addLayer({
+          "id": `label-${item.name}`,
+          "type": "symbol",
+          source: "pref-capital",
+          minzoom,
+          "filter": [
+            "==",
+            "name",
+            item.name
+          ],
+          "layout": {
+            "text-allow-overlap": true,
+            "text-font": [
+              "Noto Sans CJK JP Bold"
+            ],
+            "text-field": `${dataSet.length - index}`,
+          },
+          "paint": {
+            "text-color": "#FFFFFF",
+          }
+        })
+        
         map.addLayer({
           "id": `symbol-${item.name}`,
           "type": "symbol",
-          source: "japan",
-          "source-layer": "admins",
-          minzoom: 7,
+          source: "pref-capital",
+          minzoom,
           "filter": [
             "==",
             "name",
@@ -237,16 +287,16 @@ const Component = () => {
             "text-field": `{name:ja}\n${item.data.toLocaleString()}${unit}`,
             "text-size": 16,
             'text-variable-anchor': ["top", "bottom", "left", "right", "top-left", "top-right", "bottom-left", "bottom-right"],
-            'text-radial-offset': 0.5,
+            'text-radial-offset': 1.5,
             'text-line-height': 1.5,
             'text-justify': 'auto',
           },
           "paint": {
-            "text-color": "#FFFFFF",
-            "text-halo-width": 1,
-            "text-halo-color": "#555555"
+            "text-color": "#555555",
+            "text-halo-width": 1.5,
+            "text-halo-color": "#FFFFFF"
           }
-        }, 'point-pref')
+        })
       })
 
     })

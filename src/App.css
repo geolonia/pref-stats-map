@@ -6,3 +6,13 @@
   height: 100%;
   position: relative;
 }
+
+.title {
+  color: #ffffff;
+  position: absolute;
+  top: 0;
+  z-index: 2;
+  background-color: #EF5121;
+  padding: 10px;
+  margin: 0;
+}
