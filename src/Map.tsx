@@ -1,5 +1,10 @@
 import React from 'react';
-import { parse } from 'csv-parse/browser/esm/sync';
+import { PrefData, ConfigData } from './App';
+
+type dataType = {
+  name: string,
+  data: number,
+}
 
 declare global {
   interface Window {
@@ -7,20 +12,10 @@ declare global {
   }
 }
 
-type dataType = {
-  name: string,
-  data: number,
-}
-
-const googleCsvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSnTrkzYm-Z3dD7erHNV_N7-EbAXJh1MdnBeajgWx2R4mHbxqwp8vzIwk6UFRm50Z_GaIovARIGwodU/pub?output=csv'
-const unit = '円';
-const attribution = '総務省「2019年全国家計構造調査」';
-const colorPalette = [
-  '#ffe7ad',
-  '#F9B208',
-  '#F98404',
-  '#FC5404',
-];
+type Props = {
+  prefData: PrefData[] | null;
+  config: ConfigData | null;
+};
 
 const style = {
   width: 'calc(100% - 20px)',
@@ -107,7 +102,7 @@ const getPercentage = (max: number, min: number) => {
   }
 }
 
-const getColor = (data: number, { min, quarter, half, threeQuarter, max }: any) => {
+const getColor = (data: number, { min, quarter, half, threeQuarter, max }: any, colorPalette: Array<string>) => {
 
   if (data < quarter) {
     return colorPalette[0];
@@ -122,51 +117,24 @@ const getColor = (data: number, { min, quarter, half, threeQuarter, max }: any) 
   return colorPalette[3];
 }
 
-const Component = () => {
+const Component = (props: Props) => {
+
+  const { prefData, config } = props;
+  const unit = config ? config['単位'] : '';
+  const attribution = config ? config['出典'] : '';
+  const colorPalette = [
+    config && config['カラー1'] ? config['カラー1'] : '#FFE7AD',
+    config && config['カラー2'] ?  config['カラー2'] : '#F9B208',
+    config && config['カラー3'] ?  config['カラー3'] : '#F98404',
+    config && config['カラー4'] ?  config['カラー4'] : '#FC5404',
+  ];
 
   const mapContainer = React.useRef(null);
-  const [dataSet, setDataSet] = React.useState<Array<dataType>|null>(null);
   const [perCentage, setPercentage] = React.useState<any|null>(null);
 
   React.useEffect(() => {
 
-    fetch(`${googleCsvUrl}&timestamp=${Date.now()}`)
-      .then(response => response.text())
-      .then(text => {
-        let records = parse(text, {
-          columns: true,
-        });
-
-        records = Object.entries(records[0]).map(([key, value]) => {
-          return {
-            name: key,
-            // @ts-ignore
-            data: parseInt(value.replace(/,/g, '')),
-          }
-        })
-
-        // データの小さい順に並び替え
-        // @ts-ignore
-        records.sort((a, b) => {
-
-          if (a.data > b.data) {
-            return 1
-          }
-          if (a.data < b.data) {
-            return -1
-          }
-          return 0
-        })
-
-        setDataSet(records);
-
-      })
-
-  }, []);
-
-  React.useEffect(() => {
-
-    if (!dataSet) {
+    if (!prefData) {
       return;
     }
 
@@ -182,13 +150,13 @@ const Component = () => {
 
     map.on('load', () => {
 
-      dataSet.forEach((item) => {
+      prefData.forEach((item) => {
 
-        const maxData = dataSet[dataSet.length - 1].data;
-        const minData = dataSet[0].data;
+        const maxData = prefData[prefData.length - 1].data;
+        const minData = prefData[0].data;
 
         const perCentageData= getPercentage(maxData, minData)
-        const fillColor = getColor(item.data, perCentageData);
+        const fillColor = getColor(item.data, perCentageData, colorPalette);
 
         setPercentage((perCentageData))
 
@@ -224,11 +192,11 @@ const Component = () => {
 
       })
 
-      dataSet.forEach((item, index) => {
+      prefData.forEach((item, index) => {
 
         let minzoom;
 
-        if (index < dataSet.length - 5) {
+        if (index < prefData.length - 5) {
           minzoom = 7;
         } else {
           minzoom = 4;
@@ -267,7 +235,7 @@ const Component = () => {
             "text-font": [
               "Noto Sans CJK JP Bold"
             ],
-            "text-field": `${dataSet.length - index}`,
+            "text-field": `${prefData.length - index}`,
           },
           "paint": {
             "text-color": "#FFFFFF",
@@ -304,7 +272,7 @@ const Component = () => {
       })
 
     })
-  }, [dataSet]);
+  }, [prefData]);
 
   return (
     <>
@@ -313,7 +281,7 @@ const Component = () => {
         {colorPalette.map((color, index) => {
 
           if (!perCentage) {
-            return <></>;
+            return;
           }
 
           let label = '';
