@@ -14,12 +14,13 @@ type dataType = {
 
 const googleCsvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSnTrkzYm-Z3dD7erHNV_N7-EbAXJh1MdnBeajgWx2R4mHbxqwp8vzIwk6UFRm50Z_GaIovARIGwodU/pub?output=csv'
 const unit = '円';
+const attribution = '総務省「2019年全国家計構造調査」';
 const colorPalette = [
   '#ffe7ad',
   '#F9B208',
   '#F98404',
   '#FC5404',
-]
+];
 
 const style = {
   width: 'calc(100% - 20px)',
@@ -98,11 +99,11 @@ const getPercentage = (max: number, min: number) => {
   const half = diff / 2;
   const threeQuarter = 3 * quarter;
   return {
-    min,
-    quarter: min + quarter,
-    half: min + half,
-    threeQuarter: min + threeQuarter,
-    max,
+    min: Math.round(min),
+    quarter: Math.round(min + quarter),
+    half: Math.round(min + half),
+    threeQuarter: Math.round(min + threeQuarter),
+    max: Math.round(max),
   }
 }
 
@@ -125,6 +126,7 @@ const Component = () => {
 
   const mapContainer = React.useRef(null);
   const [dataSet, setDataSet] = React.useState<Array<dataType>|null>(null);
+  const [perCentage, setPercentage] = React.useState<any|null>(null);
 
   React.useEffect(() => {
 
@@ -170,11 +172,11 @@ const Component = () => {
 
     const map = new window.geolonia.Map({
       container: mapContainer.current,
-      zoom: 5,
+      zoom: 4.8,
       hash: true,
       center: [138.22, 38.91],
       style: mapStyle,
-      minZoom: 5,
+      minZoom: 4,
       maxZoom: 8,
     })
 
@@ -185,8 +187,10 @@ const Component = () => {
         const maxData = dataSet[dataSet.length - 1].data;
         const minData = dataSet[0].data;
 
-        const { min, quarter, half, threeQuarter, max } = getPercentage(maxData, minData)
-        const fillColor = getColor(item.data, { min, quarter, half, threeQuarter, max });
+        const perCentageData= getPercentage(maxData, minData)
+        const fillColor = getColor(item.data, perCentageData);
+
+        setPercentage((perCentageData))
 
         map.addLayer({
           "id": `fill-${item.name}`,
@@ -224,7 +228,7 @@ const Component = () => {
 
         let minzoom;
 
-        if (index < dataSet.length - 6) {
+        if (index < dataSet.length - 5) {
           minzoom = 7;
         } else {
           minzoom = 4;
@@ -304,6 +308,38 @@ const Component = () => {
 
   return (
     <>
+      <fieldset className="checkbox">
+
+        {colorPalette.map((color, index) => {
+
+          if (!perCentage) {
+            return <></>;
+          }
+
+          let label = '';
+
+          if (index === 0) {
+            label = `${perCentage.threeQuarter.toLocaleString()}${unit}以上`;
+          } else if (index === 1) {
+            label = `${perCentage.half.toLocaleString()}${unit} ~ ${perCentage.threeQuarter.toLocaleString()}${unit}未満`;
+          } else if (index === 2) {
+            label = `${perCentage.quarter.toLocaleString()}${unit} ~ ${perCentage.half.toLocaleString()}${unit}未満`;
+          } else if (index === 3) {
+            label = `${perCentage.quarter.toLocaleString()}${unit}未満`;
+          }
+          
+          const reversedColor = colorPalette[colorPalette.length - index - 1];
+
+          return (
+            <div key={index}>
+              <label><span className="legend-color" style={{ backgroundColor: reversedColor}}></span>{label}</label>
+            </div>
+          )
+        })}
+
+        <div className='attribution'>{attribution}</div>
+
+      </fieldset>
       <div style={style} ref={mapContainer} />
     </>
   );
