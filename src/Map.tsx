@@ -16,9 +16,8 @@ const googleCsvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSnTrkzYm-
 const unit = '円';
 
 const style = {
-  position: 'absolute',
-  width: '100vw',
-  height: '100vh',
+  width: 'calc(100% - 20px)',
+  height: 'calc(100% - 20px)',
 } as React.CSSProperties;
 
 const mapStyle = {
@@ -35,7 +34,29 @@ const mapStyle = {
       "id": "background",
       "type": "background",
       "paint": {
-        "background-color": "#222222"
+        "background-color": "#F3F3F3"
+      }
+    },
+    {
+      "id": "prefs-blur",
+      "type": "line",
+      "source": "japan",
+      "source-layer": "prefectures",
+      "layout": {
+        "line-cap": "round",
+        "line-join": "round",
+        "line-round-limit": 1
+      },
+      "paint": {
+        "line-color": "#333333",
+        "line-blur": 5,
+        "line-width": [
+          "interpolate", ["linear"], ["zoom"],
+          4, 0,
+          8, 6
+        ],
+        "line-opacity": 0.5,
+        "line-translate": [0, 1],
       }
     },
     {
@@ -147,9 +168,9 @@ const Component = () => {
 
     const map = new window.geolonia.Map({
       container: mapContainer.current,
-      zoom: 7,
+      zoom: 5,
       hash: true,
-      center: [135.53, 34.454],
+      center: [138.22, 38.91],
       style: mapStyle,
       minZoom: 4,
       maxZoom: 8,
@@ -191,7 +212,7 @@ const Component = () => {
             item.name
           ],
           "paint": {
-            "line-color": '#ffffff',
+            "line-color": '#555555',
           }
         }, 'point-pref')
 
