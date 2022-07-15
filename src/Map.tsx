@@ -117,12 +117,14 @@ const Component = (props: Props) => {
   const { prefData, config } = props;
   const unit = config ? config['単位'] : '';
   const attribution = config ? config['出典'] : '';
-  const colorPalette = [
-    config && config['カラー1'] ? config['カラー1'] : '#FFE7AD',
-    config && config['カラー2'] ?  config['カラー2'] : '#F9B208',
-    config && config['カラー3'] ?  config['カラー3'] : '#F98404',
-    config && config['カラー4'] ?  config['カラー4'] : '#FC5404',
-  ];
+  const colorPalette = React.useMemo(() => {
+    return   [
+      config && config['カラー1'] ? config['カラー1'] : '#FFE7AD',
+      config && config['カラー2'] ?  config['カラー2'] : '#F9B208',
+      config && config['カラー3'] ?  config['カラー3'] : '#F98404',
+      config && config['カラー4'] ?  config['カラー4'] : '#FC5404',
+    ];
+  }, [config])
 
   const mapContainer = React.useRef(null);
   const [perCentage, setPercentage] = React.useState<any|null>(null);
@@ -267,7 +269,7 @@ const Component = (props: Props) => {
       })
 
     })
-  }, [prefData]);
+  }, [colorPalette, prefData, unit]);
 
   return (
     <>
@@ -276,7 +278,7 @@ const Component = (props: Props) => {
         {colorPalette.map((color, index) => {
 
           if (!perCentage) {
-            return;
+            return <div key={index}></div>;
           }
 
           let label = '';
