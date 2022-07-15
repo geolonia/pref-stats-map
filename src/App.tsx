@@ -1,6 +1,7 @@
 import React from 'react';
 import Map from './Map';
 import { parse } from 'csv-parse/browser/esm/sync';
+import ReactLoading from 'react-loading';
 import './App.css';
 
 const googleCsvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSnTrkzYm-Z3dD7erHNV_N7-EbAXJh1MdnBeajgWx2R4mHbxqwp8vzIwk6UFRm50Z_GaIovARIGwodU/pub?output=csv';
@@ -109,6 +110,7 @@ function App() {
 
   return (
     <div className="App">
+      {!prefData && !config && <ReactLoading className="loading" type={'bubbles'} height={100} width={100} />}
       <h1 className='title'>{config !== null && config['タイトル']}</h1>
       {prefData !== null && config !== null &&
         <Map
