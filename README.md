@@ -62,7 +62,7 @@ URL コピーしてください
 ![スクリーンショット 2022-07-22 14 58 49](https://user-images.githubusercontent.com/8760841/180373754-ef8444be-74ee-405a-82ed-003a707983f1.png)
 
 
-コピーした URL を、`config.yml` の `data_url` にセットして、ファイルをコミットして下さい。GitHub に push すると GitHub Actions が実行され、2~3分でデプロイされます。
+コピーした URL を、`config.yml` の `data_url` にセットして、ファイルをコミットして下さい。GitHub に push すると GitHub Actions が実行され、2分程度でデプロイされます。
 
 
 ## 開発者向け
