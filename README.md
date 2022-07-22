@@ -6,7 +6,7 @@
 ## 開発者向け
 
 ```
-git clone https://github.com/naogify/pref-stats-map.git
+git clone https://github.com/geolonia/pref-stats-map.git
 cd pref-stats-map
 npm install
 npm start
