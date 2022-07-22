@@ -1,0 +1,9 @@
+title: 1世帯あたりの菓子類平均支出額（1ヶ月分）
+data_url: https://docs.google.com/spreadsheets/d/e/2PACX-1vSnTrkzYm-Z3dD7erHNV_N7-EbAXJh1MdnBeajgWx2R4mHbxqwp8vzIwk6UFRm50Z_GaIovARIGwodU/pub?gid=0&single=true&output=csv
+attribution: 総務省「2019年全国家計構造調査」
+attribution_url: https://www.e-stat.go.jp/stat-search/files?page=1&layout=datalist&toukei=00200564&tstat=000001139024&stat_infid=000032053504
+color1: '#FFE7AD'
+color2: '#F9B208'
+color3: '#F98404'
+color4: '#FC5404'
+unit: 円
