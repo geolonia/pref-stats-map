@@ -308,7 +308,7 @@ const Component = (props: Props) => {
         <div className='attribution'><a href={attribution_url} style={{color: 'rgba(0,0,0,.75)'}} target="_blank" rel="noopener noreferrer">{attribution}</a></div>
 
       </fieldset>
-      <div style={style} ref={mapContainer} />
+      <div data-navigation-control="bottom-left" style={style} ref={mapContainer} />
     </>
   );
 }

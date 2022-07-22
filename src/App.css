@@ -4,13 +4,13 @@
   padding: 10px;
   width: 100%;
   height: 100%;
-  position: relative;
 }
 
 .title {
   color: #ffffff;
   position: absolute;
   top: 0;
+  left: 0;
   z-index: 2;
   background-color: #EF5121;
   padding: 10px;
