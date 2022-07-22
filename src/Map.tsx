@@ -1,5 +1,7 @@
 import React from 'react';
-import { PrefData, ConfigData } from './App';
+import { PrefData } from './App';
+// You can see config.json after running `npm start` or `npm run build`
+import config from './config.json'
 
 declare global {
   interface Window {
@@ -9,7 +11,6 @@ declare global {
 
 type Props = {
   prefData: PrefData[] | null;
-  config: ConfigData | null;
 };
 
 const style = {
@@ -114,17 +115,17 @@ const getColor = (data: number, { min, quarter, half, threeQuarter, max }: any, 
 
 const Component = (props: Props) => {
 
-  const { prefData, config } = props;
-  const unit = config ? config['単位'] : '';
-  const attribution = config ? config['出典'] : '';
+  const { prefData } = props;
+  const unit = config ? config['unit'] : '';
+  const attribution = config ? config['attribution'] : '';
   const colorPalette = React.useMemo(() => {
     return   [
-      config && config['カラー1'] ? config['カラー1'] : '#FFE7AD',
-      config && config['カラー2'] ?  config['カラー2'] : '#F9B208',
-      config && config['カラー3'] ?  config['カラー3'] : '#F98404',
-      config && config['カラー4'] ?  config['カラー4'] : '#FC5404',
+      config && config['color1'] ? config['color1'] : '#FFE7AD',
+      config && config['color2'] ?  config['color2'] : '#F9B208',
+      config && config['color3'] ?  config['color3'] : '#F98404',
+      config && config['color4'] ?  config['color4'] : '#FC5404',
     ];
-  }, [config])
+  }, [])
 
   const mapContainer = React.useRef(null);
   const [perCentage, setPercentage] = React.useState<any|null>(null);
@@ -238,7 +239,7 @@ const Component = (props: Props) => {
             "text-color": "#FFFFFF",
           }
         })
-        
+
         map.addLayer({
           "id": `symbol-${item.name}`,
           "type": "symbol",
@@ -292,7 +293,7 @@ const Component = (props: Props) => {
           } else if (index === 3) {
             label = `${perCentage.quarter.toLocaleString()}${unit}未満`;
           }
-          
+
           const reversedColor = colorPalette[colorPalette.length - index - 1];
 
           return (
