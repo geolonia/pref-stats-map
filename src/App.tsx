@@ -55,7 +55,7 @@ function App() {
 
     const fetchData = async () => {
 
-      const url = `${encodeURIComponent(config.data_url)}&timestamp=${Date.now()}`;
+      const url = `${config.data_url}&timestamp=${Date.now()}`;
       const response = await fetch(url);
       const text = await response.text();
 

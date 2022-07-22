@@ -118,6 +118,8 @@ const Component = (props: Props) => {
   const { prefData } = props;
   const unit = config ? config['unit'] : '';
   const attribution = config ? config['attribution'] : '';
+  const attribution_url = config ? config['attribution_url'] : '';
+
   const colorPalette = React.useMemo(() => {
     return   [
       config && config['color1'] ? config['color1'] : '#FFE7AD',
@@ -303,7 +305,7 @@ const Component = (props: Props) => {
           )
         })}
 
-        <div className='attribution'>{attribution}</div>
+        <div className='attribution'><a href={attribution_url} style={{color: 'rgba(0,0,0,.75)'}} target="_blank" rel="noopener noreferrer">{attribution}</a></div>
 
       </fieldset>
       <div style={style} ref={mapContainer} />
