@@ -75,7 +75,6 @@ function App() {
   return (
     <div className="App">
       {!prefData && !config && <ReactLoading className="loading" type={'bubbles'} height={100} width={100} />}
-      <h1 className='title'>{config.title}</h1>
       {prefData !== null &&
         <Map
           prefData={prefData}
