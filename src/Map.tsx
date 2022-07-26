@@ -2,6 +2,7 @@ import React from 'react';
 import { PrefData } from './App';
 // You can see config.json after running `npm start` or `npm run build`
 import config from './config.json'
+import './Map.css';
 
 declare global {
   interface Window {
@@ -12,11 +13,6 @@ declare global {
 type Props = {
   prefData: PrefData[] | null;
 };
-
-const style = {
-  width: 'calc(100% - 20px)',
-  height: 'calc(100% - 20px)',
-} as React.CSSProperties;
 
 const mapStyle = {
   "version": 8,
@@ -308,7 +304,7 @@ const Component = (props: Props) => {
         <div className='attribution'><a href={attribution_url} style={{color: 'rgba(0,0,0,.75)'}} target="_blank" rel="noopener noreferrer">{attribution}</a></div>
 
       </fieldset>
-      <div data-navigation-control="bottom-left" style={style} ref={mapContainer} />
+      <div id="map" data-navigation-control="bottom-left" ref={mapContainer} />
     </>
   );
 }
