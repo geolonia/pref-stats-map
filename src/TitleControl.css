@@ -1,0 +1,17 @@
+.title {
+  color: #ffffff;
+  background-color: #EF5121;
+  font-size: 28px;
+  line-height: 1.2;
+  margin: 0;
+  padding: 5px;
+  pointer-events: none;
+}
+
+@media screen and (max-width: 600px) {
+  .title {
+    font-size: 16px;
+    max-width: 60%;
+    padding: 5px;
+  }
+}

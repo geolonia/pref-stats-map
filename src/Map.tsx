@@ -1,5 +1,7 @@
 import React from 'react';
 import { PrefData } from './App';
+import TitleControl from './TitleControl';
+import LegendControl from './LegendControl';
 // You can see config.json after running `npm start` or `npm run build`
 import config from './config.json'
 import './Map.css';
@@ -13,6 +15,15 @@ declare global {
 type Props = {
   prefData: PrefData[] | null;
 };
+
+type colorPaletteType = Array<string>;
+
+export const colorPalette: colorPaletteType = [
+  config && config['color1'] ? config['color1'] : '#FC5404',
+  config && config['color2'] ? config['color2'] : '#F98404',
+  config && config['color3'] ? config['color3'] : '#F9B208',
+  config && config['color4'] ? config['color4'] : '#FFE7AD',
+];
 
 const mapStyle = {
   "version": 8,
@@ -97,36 +108,24 @@ const getPercentage = (max: number, min: number) => {
 const getColor = (data: number, { min, quarter, half, threeQuarter, max }: any, colorPalette: Array<string>) => {
 
   if (data < quarter) {
-    return colorPalette[0];
+    return colorPalette[3];
   }
   if (data < half) {
-    return colorPalette[1];
-  }
-  if (data < threeQuarter) {
     return colorPalette[2];
   }
+  if (data < threeQuarter) {
+    return colorPalette[1];
+  }
 
-  return colorPalette[3];
+  return colorPalette[0];
 }
 
 const Component = (props: Props) => {
 
   const { prefData } = props;
   const unit = config ? config['unit'] : '';
-  const attribution = config ? config['attribution'] : '';
-  const attribution_url = config ? config['attribution_url'] : '';
-
-  const colorPalette = React.useMemo(() => {
-    return   [
-      config && config['color1'] ? config['color1'] : '#FFE7AD',
-      config && config['color2'] ?  config['color2'] : '#F9B208',
-      config && config['color3'] ?  config['color3'] : '#F98404',
-      config && config['color4'] ?  config['color4'] : '#FC5404',
-    ];
-  }, [])
 
   const mapContainer = React.useRef(null);
-  const [perCentage, setPercentage] = React.useState<any|null>(null);
 
   React.useEffect(() => {
 
@@ -146,15 +145,20 @@ const Component = (props: Props) => {
 
     map.on('load', () => {
 
+      const maxData = prefData[prefData.length - 1].data;
+      const minData = prefData[0].data;
+
+      const perCentageData= getPercentage(maxData, minData)
+
+      const titleControl = new TitleControl();
+      map.addControl(titleControl, 'top-left');
+
+      const legendControl = new LegendControl(perCentageData);
+      map.addControl(legendControl, 'bottom-right');
+
       prefData.forEach((item) => {
 
-        const maxData = prefData[prefData.length - 1].data;
-        const minData = prefData[0].data;
-
-        const perCentageData= getPercentage(maxData, minData)
         const fillColor = getColor(item.data, perCentageData, colorPalette);
-
-        setPercentage((perCentageData))
 
         map.addLayer({
           "id": `fill-${item.name}`,
@@ -268,43 +272,11 @@ const Component = (props: Props) => {
       })
 
     })
-  }, [colorPalette, prefData, unit]);
+  }, [prefData, unit]);
 
   return (
     <>
-      <fieldset className="checkbox">
-
-        {colorPalette.map((color, index) => {
-
-          if (!perCentage) {
-            return <div key={index}></div>;
-          }
-
-          let label = '';
-
-          if (index === 0) {
-            label = `${perCentage.threeQuarter.toLocaleString()}${unit}以上`;
-          } else if (index === 1) {
-            label = `${perCentage.half.toLocaleString()}${unit} ~ ${perCentage.threeQuarter.toLocaleString()}${unit}未満`;
-          } else if (index === 2) {
-            label = `${perCentage.quarter.toLocaleString()}${unit} ~ ${perCentage.half.toLocaleString()}${unit}未満`;
-          } else if (index === 3) {
-            label = `${perCentage.quarter.toLocaleString()}${unit}未満`;
-          }
-
-          const reversedColor = colorPalette[colorPalette.length - index - 1];
-
-          return (
-            <div key={index}>
-              <label><span className="legend-color" style={{ backgroundColor: reversedColor}}></span>{label}</label>
-            </div>
-          )
-        })}
-
-        <div className='attribution'><a href={attribution_url} style={{color: 'rgba(0,0,0,.75)'}} target="_blank" rel="noopener noreferrer">{attribution}</a></div>
-
-      </fieldset>
-      <div id="map" data-navigation-control="bottom-left" ref={mapContainer} />
+      <div id="map" ref={mapContainer} />
     </>
   );
 }
