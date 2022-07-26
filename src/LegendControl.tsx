@@ -1,6 +1,7 @@
 import './TitleControl.css';
 import config from './config.json'
 import { colorPalette } from './Map'
+import './LegendControl.css';
 
 const attributionText = config ? config['attribution'] : '';
 const attributionUrl = config ? config['attribution_url'] : '';
@@ -9,7 +10,7 @@ const unit = config ? config['unit'] : '';
 class LegendControl {
 
   map: any;
-  container: HTMLFieldSetElement | undefined;
+  container: HTMLDivElement | undefined;
   perCentage: any;
 
   constructor(perCentage: any) {
@@ -20,8 +21,10 @@ class LegendControl {
 
     this.map = map;
 
-    this.container = document.createElement('fieldset');
-    this.container.className = 'checkbox';
+    this.container = document.createElement('div');
+    this.container.className = '';
+    const fieldset = document.createElement('fieldset');
+    fieldset.className = 'checkbox maplibregl-ctrl';
 
     let legendText = '';
 
@@ -41,14 +44,16 @@ class LegendControl {
 
       const legend = document.createElement('div');
       legend.innerHTML = `<label><span class="legend-color" style="background-color: ${color}" ></span>${legendText}</label>`;
-      this.container.appendChild(legend);
+      fieldset.appendChild(legend);
 
     }
 
     const attribution = document.createElement('div');
     attribution.className = 'attribution';
     attribution.innerHTML = `<a href="${attributionUrl}" target="_blank" rel="noopener noreferrer">${attributionText}</a>`;
-    this.container.appendChild(attribution);
+    fieldset.appendChild(attribution);
+
+    this.container.appendChild(fieldset);
 
     return this.container;
 
