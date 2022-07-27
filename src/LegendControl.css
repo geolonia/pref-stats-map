@@ -24,15 +24,17 @@
   width: 25px;
 }
 
-.attribution {
-  font-size: 12px;
-  margin-top: 10px;
-  color: rgba(0, 0, 0, 0.75)
-}
 
 #maplibregl-ctrl-legend {
   background-color: transparent;
   pointer-events: none;
+}
+
+#maplibregl-ctrl-legend .attribution {
+  font-size: 12px;
+  margin-top: 10px;
+  color: rgba(0, 0, 0, 0.75);
+  pointer-events: auto;
 }
 
 #maplibregl-ctrl-legend .mapboxgl-ctrl-attrib-button.maplibregl-ctrl-attrib-button {
