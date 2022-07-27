@@ -3,8 +3,9 @@
 }
 
 .checkbox {
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 1);
   padding: 5px;
+  margin: 0;
   border: 1px solid #909090;
   display: flex;
   flex-direction: column;
@@ -27,4 +28,18 @@
   font-size: 12px;
   margin-top: 10px;
   color: rgba(0, 0, 0, 0.75)
+}
+
+#maplibregl-ctrl-legend {
+  background-color: transparent;
+}
+
+#maplibregl-ctrl-legend .mapboxgl-ctrl-attrib-button.maplibregl-ctrl-attrib-button {
+  bottom: 0;
+  margin-top: auto;
+  background-color: #ffffff;
+}
+
+.maplibregl-ctrl-legend-button {
+  background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.2 19.4C16.1764 19.4 19.4 16.1764 19.4 12.2C19.4 8.22355 16.1764 5 12.2 5C8.22355 5 5 8.22355 5 12.2C5 16.1764 8.22355 19.4 12.2 19.4Z' fill='black'/%3E%3Cpath d='M10.3529 9.41113H8V15.9992H10.3529V9.41113Z' fill='white'/%3E%3Cpath d='M16.9418 11.2939H14.5889V15.9997H16.9418V11.2939Z' fill='white'/%3E%3Cpath d='M13.6468 8H11.2939V15.9998H13.6468V8Z' fill='white'/%3E%3C/svg%3E%0A");
 }
