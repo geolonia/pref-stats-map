@@ -33,6 +33,9 @@ const Component = () => {
 
     map.on('load', async () => {
 
+      const titleControl = new TitleControl();
+      map.addControl(titleControl, 'top-left');
+
       const fetchData = async () => {
 
         const url = `${config.data_url}&timestamp=${Date.now()}`;
@@ -53,9 +56,6 @@ const Component = () => {
       const minData = prefData[0].data;
 
       const perCentageData= getPercentage(maxData, minData)
-
-      const titleControl = new TitleControl();
-      map.addControl(titleControl, 'top-left');
 
       const legendControl = new LegendControl(perCentageData);
       map.addControl(legendControl, 'bottom-right');
