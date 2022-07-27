@@ -1,11 +1,7 @@
 import './TitleControl.css';
-import config from './config.json'
-import { colorPalette } from './Map'
+import { colorPalette, unit, attributionText, attributionUrl } from './global';
 import './LegendControl.css';
 
-const attributionText = config ? config['attribution'] : '';
-const attributionUrl = config ? config['attribution_url'] : '';
-const unit = config ? config['unit'] : '';
 
 class LegendControl {
 
