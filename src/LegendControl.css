@@ -32,9 +32,11 @@
 
 #maplibregl-ctrl-legend {
   background-color: transparent;
+  pointer-events: none;
 }
 
 #maplibregl-ctrl-legend .mapboxgl-ctrl-attrib-button.maplibregl-ctrl-attrib-button {
+  pointer-events: auto;
   bottom: 0;
   margin-top: auto;
   background-color: #ffffff;
