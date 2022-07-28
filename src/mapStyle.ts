@@ -1,3 +1,5 @@
+import config from './config.json';
+
 export const mapStyle = {
   "version": 8,
   "sources": {
@@ -47,7 +49,7 @@ export const mapStyle = {
       "source": "japan",
       "source-layer": "prefectures",
       "paint": {
-        "fill-color": "#F3F3F3",
+        "fill-color": `${config.color4}`,
         "fill-outline-color": "#444444"
       }
     },
