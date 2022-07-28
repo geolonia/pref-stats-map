@@ -66,7 +66,7 @@ const Component = () => {
         let minzoom;
 
         if (index < prefData.length - 5) {
-          minzoom = 6;
+          minzoom = 7;
         } else {
           minzoom = 3;
         }
