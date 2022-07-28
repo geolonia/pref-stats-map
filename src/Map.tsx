@@ -38,8 +38,7 @@ const Component = () => {
 
       const fetchData = async () => {
 
-        const url = `${config.data_url}&timestamp=${Date.now()}`;
-        const response = await fetch(url);
+        const response = await fetch(config.data_url);
         const text = await response.text();
 
         let records = parse(text, {
