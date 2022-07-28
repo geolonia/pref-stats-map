@@ -5,12 +5,8 @@ export const mapStyle = {
   "sources": {
     "japan": {
       "type": "vector",
-      "url": "https://cdn.geolonia.com/tiles/japanese-prefectures.json"
+      "url": "https://tileserver.geolonia.com/news-japan/tiles.json?key=YOUR-API-KEY"
     },
-    "pref-capital": {
-      "type": "geojson",
-      "data": "https://cdn.geolonia.com/japanese-prefs/v1.geojson"
-    }
   },
   "glyphs": "https://glyphs.geolonia.com/{fontstack}/{range}.pbf",
   "layers": [
@@ -54,9 +50,19 @@ export const mapStyle = {
       }
     },
     {
+      "id": "news-border",
+      "type": "line",
+      "source": "japan",
+      "source-layer": "border",
+      "paint": {
+        "line-color": `#555555`,
+      }
+    },
+    {
       id: 'point-pref',
       type: 'circle',
-      source: "pref-capital",
+      "source": "japan",
+      "source-layer": "pref-capital",
       paint: {
         'circle-radius': 4,
         'circle-color': 'rgba(255, 255, 255, 0.6)',
