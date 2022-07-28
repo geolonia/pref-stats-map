@@ -59,7 +59,6 @@
 }
 
 .legend-close {
-  display: none;
   background: transparent;
   margin: 0;
   padding: 10px;
@@ -67,10 +66,15 @@
   position : absolute;
   top : 0;
   right : 0;
+  opacity: 0;
+  transition-property: opacity;
+  transition-duration: 0.5s;
 }
 
 .legend-mobile .legend-close {
-  display: block;
+  opacity: 1;
+  transition-property: opacity;
+  transition-duration: 0.5s;
 }
 
 .legend-close span {
