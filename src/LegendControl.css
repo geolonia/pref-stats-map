@@ -4,12 +4,18 @@
 
 .checkbox {
   background-color: rgba(255, 255, 255, 1);
-  padding: 5px;
+  padding: 15px;
   margin: 0;
   border: 1px solid #909090;
-  display: flex;
-  flex-direction: column;
-  pointer-events: none;
+  opacity: 0;
+  transition-property: opacity;
+  transition-duration: 0.5s;
+}
+
+.maplibregl-compact-show .checkbox {
+  opacity: 1;
+  transition-property: opacity;
+  transition-duration: 0.5s;
 }
 
 .checkbox label {
@@ -24,22 +30,50 @@
   width: 25px;
 }
 
-#maplibregl-ctrl-legend {
-  background-color: transparent;
-  pointer-events: none;
+.legend-container {
+  pointer-events: auto;
+  position: relative;
 }
 
-#maplibregl-ctrl-legend .attribution {
-  font-size: 12px;
-  margin-top: 10px;
-  color: rgba(0, 0, 0, 0.75);
-  pointer-events: auto;
+.legend-container.maplibregl-compact-show .legend-toggle {
+  display: none;
 }
 
-#maplibregl-ctrl-legend .mapboxgl-ctrl-attrib-button.maplibregl-ctrl-attrib-button {
-  pointer-events: auto;
+.legend-toggle {
+  border-radius: 4px;
+  background: #ffffff;
+  margin: 10px 6px 10px 10px;
+  padding: 0;
+  border: none;
+  box-shadow: 0 0 0 2px rgb(0 0 0 / 10%);
+  width: 29px;
+  height: 29px;
+  position: absolute;
   bottom: 0;
-  margin-top: auto;
-  background-color: #ffffff;
-  background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.2 19.4C16.1764 19.4 19.4 16.1764 19.4 12.2C19.4 8.22355 16.1764 5 12.2 5C8.22355 5 5 8.22355 5 12.2C5 16.1764 8.22355 19.4 12.2 19.4Z' fill='black'/%3E%3Cpath d='M10.3529 9.41113H8V15.9992H10.3529V9.41113Z' fill='white'/%3E%3Cpath d='M16.9418 11.2939H14.5889V15.9997H16.9418V11.2939Z' fill='white'/%3E%3Cpath d='M13.6468 8H11.2939V15.9998H13.6468V8Z' fill='white'/%3E%3C/svg%3E%0A");
+  right: 0;
+}
+
+.legend-toggle span {
+  vertical-align: middle;
+  font-size: 23px;
+}
+
+.legend-close {
+  display: none;
+  background: transparent;
+  margin: 0;
+  padding: 10px;
+  border: none;
+  position : absolute;
+  top : 0;
+  right : 0;
+}
+
+.legend-mobile .legend-close {
+  display: block;
+}
+
+.legend-close span {
+  font-size: 24px;
+  vertical-align: middle;
 }
