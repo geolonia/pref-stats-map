@@ -3,7 +3,7 @@ import TitleControl from './TitleControl';
 import LegendControl from './LegendControl';
 import { mapStyle } from './mapStyle';
 import { unit, colorPalette } from './global';
-import { formatPref, getPercentage, getColor} from './utils';
+import { formatPref, getPercentage, getColor } from './utils';
 import { parse } from 'csv-parse/browser/esm/sync';
 // You can see config.json after running `npm start` or `npm run build`
 import config from './config.json'
@@ -23,11 +23,11 @@ const Component = () => {
 
     const map = new window.geolonia.Map({
       container: mapContainer.current,
-      zoom: 4.8,
+      zoom: 3.5,
       hash: true,
-      center: [138.22, 38.91],
+      center: [137.74, 37.53],
       style: mapStyle,
-      minZoom: 4,
+      minZoom: 3,
       maxZoom: 8,
     })
 
@@ -54,14 +54,22 @@ const Component = () => {
       const maxData = prefData[prefData.length - 1].data;
       const minData = prefData[0].data;
 
-      const perCentageData= getPercentage(maxData, minData)
+      const perCentageData = getPercentage(maxData, minData)
 
       const legendControl = new LegendControl(perCentageData);
       map.addControl(legendControl, 'bottom-right');
 
-      prefData.forEach((item) => {
+      prefData.forEach((item, index) => {
 
         const fillColor = getColor(item.data, perCentageData, colorPalette);
+
+        let minzoom;
+
+        if (index < prefData.length - 5) {
+          minzoom = 7;
+        } else {
+          minzoom = 3;
+        }
 
         map.addLayer({
           "id": `fill-${item.name}`,
@@ -93,18 +101,6 @@ const Component = () => {
           }
         }, 'point-pref')
 
-      })
-
-      prefData.forEach((item, index) => {
-
-        let minzoom;
-
-        if (index < prefData.length - 5) {
-          minzoom = 7;
-        } else {
-          minzoom = 4;
-        }
-
         map.addLayer({
           "id": `circle-${item.name}`,
           "type": "circle",
@@ -118,7 +114,15 @@ const Component = () => {
           "paint": {
             'circle-stroke-width': 1.5,
             'circle-stroke-color': 'rgba(255, 255, 255, 1)',
-            'circle-radius': 20,
+            'circle-radius': [
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              3,
+              10,
+              5,
+              20
+            ],
             'circle-color': 'rgba(255, 0, 0, 1)',
           },
         })
@@ -139,6 +143,15 @@ const Component = () => {
               "Noto Sans CJK JP Bold"
             ],
             "text-field": `${prefData.length - index}`,
+            "text-size": [
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              3,
+              10,
+              5,
+              16
+            ],
           },
           "paint": {
             "text-color": "#FFFFFF",
