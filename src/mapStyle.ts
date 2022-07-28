@@ -5,7 +5,8 @@ export const mapStyle = {
   "sources": {
     "japan": {
       "type": "vector",
-      "url": "https://tileserver.geolonia.com/news-japan/tiles.json?key=YOUR-API-KEY"
+      "url": "https://tileserver.geolonia.com/news-japan/tiles.json?key=YOUR-API-KEY",
+      "attribution": '<a href="https://geolonia.com/credit/" target="_blank">&copy; Geolonia</a>'
     },
   },
   "glyphs": "https://glyphs.geolonia.com/{fontstack}/{range}.pbf",
