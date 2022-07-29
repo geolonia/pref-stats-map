@@ -104,7 +104,8 @@ const Component = () => {
         map.addLayer({
           "id": `circle-${item.name}`,
           "type": "circle",
-          source: "pref-capital",
+          "source": "japan",
+          "source-layer": "pref-capital",
           minzoom,
           "filter": [
             "==",
@@ -130,7 +131,8 @@ const Component = () => {
         map.addLayer({
           "id": `label-${item.name}`,
           "type": "symbol",
-          source: "pref-capital",
+          "source": "japan",
+          "source-layer": "pref-capital",
           minzoom,
           "filter": [
             "==",
@@ -161,7 +163,8 @@ const Component = () => {
         map.addLayer({
           "id": `symbol-${item.name}`,
           "type": "symbol",
-          source: "pref-capital",
+          "source": "japan",
+          "source-layer": "pref-capital",
           minzoom,
           "filter": [
             "==",
